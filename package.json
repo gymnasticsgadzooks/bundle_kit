@@ -2,7 +2,7 @@
   "name": "bundle-kit",
   "private": true,
   "scripts": {
-    "build": "remix vite:build",
+    "build": "prisma generate && remix vite:build",
     "test": "npm run -w bundle-discount test:unit",
     "validate": "node ./scripts/validate-gates.mjs",
     "validate:ci": "node ./scripts/validate-gates.mjs --strict",

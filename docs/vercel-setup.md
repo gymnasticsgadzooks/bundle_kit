@@ -90,6 +90,33 @@ Or push to the connected Git branch for automatic deploys.
 
 ---
 
+## Troubleshooting: 500 FUNCTION_INVOCATION_FAILED
+
+If you see `500: INTERNAL_SERVER_ERROR` / `FUNCTION_INVOCATION_FAILED`:
+
+1. **Environment variables** — Ensure all required vars are set in Vercel (Project → Settings → Environment Variables):
+   - `DATABASE_URL` (Supabase pooler URI with `?pgbouncer=true`)
+   - `SHOPIFY_API_KEY`, `SHOPIFY_API_SECRET`, `SCOPES`, `SHOPIFY_APP_URL`
+   - `NODE_ENV=production`
+
+2. **Database** — Run migrations against your Supabase DB before deploying:
+   ```bash
+   DATABASE_URL="postgresql://..." npx prisma migrate deploy
+   ```
+
+3. **Logs** — Check Vercel Project → Deployments → [deployment] → Functions → View logs for the actual error.
+
+### Vercel React Best Practices (cold start / performance)
+
+Per [Vercel React Best Practices](https://github.com/vercel-labs/agent-skills/tree/main/skills/react-best-practices):
+
+- **Barrel imports** — `@shopify/polaris` uses barrel imports; can add 200–800ms to cold starts. If cold starts are an issue, consider direct imports (e.g. `@shopify/polaris/Page`) where feasible.
+- **Function config** — `vercel.json` sets `memory: 1024` and `maxDuration: 30` for serverless functions to give headroom during cold starts.
+- **Prisma singleton** — `db.server.ts` reuses one `PrismaClient` per instance to avoid connection pool exhaustion.
+- **Entry.server** — Uses `handleRequest` from `@vercel/remix` for streaming compatibility with Vercel Functions.
+
+---
+
 ## 6. Post-Deploy
 
 1. Copy your production URL (e.g. `https://bundle-kit-xxx.vercel.app`)
