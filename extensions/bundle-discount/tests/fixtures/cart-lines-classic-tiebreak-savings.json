@@ -1,0 +1,49 @@
+{
+  "payload": {
+    "target": "cart.lines.discounts.generate.run",
+    "export": "cart-lines-discounts-generate-run",
+    "input": {
+      "cart": {
+        "lines": [
+          {
+            "id": "gid://shopify/CartLine/1",
+            "quantity": 4,
+            "cost": { "subtotalAmount": { "amount": "80.0" } },
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/100",
+              "product": { "id": "gid://shopify/Product/1", "handle": "product-a" }
+            }
+          }
+        ]
+      },
+      "shop": { "localTime": { "date": "2026-02-28" } },
+      "discount": {
+        "discountClasses": ["ORDER", "PRODUCT"],
+        "metafield": {
+          "value": "[{\"id\":\"classic-5\",\"title\":\"Buy 4 A Save $5\",\"type\":\"CLASSIC\",\"priority\":10,\"discountType\":\"FIXED_AMOUNT\",\"discountValue\":5,\"items\":[{\"productId\":\"gid://shopify/Product/1\",\"requiredQuantity\":4}]},{\"id\":\"classic-8\",\"title\":\"Buy 4 A Save $8\",\"type\":\"CLASSIC\",\"priority\":10,\"discountType\":\"FIXED_AMOUNT\",\"discountValue\":8,\"items\":[{\"productId\":\"gid://shopify/Product/1\",\"requiredQuantity\":4}]}]"
+        }
+      }
+    },
+    "output": {
+      "operations": [
+        {
+          "productDiscountsAdd": {
+            "candidates": [
+              {
+                "message": "Buy 4 A Save $8",
+                "targets": [
+                  { "cartLine": { "id": "gid://shopify/CartLine/1", "quantity": 4 } }
+                ],
+                "value": {
+                  "fixedAmount": { "amount": 8, "appliesToEachItem": false }
+                }
+              }
+            ],
+            "selectionStrategy": "ALL"
+          }
+        }
+      ]
+    }
+  }
+}

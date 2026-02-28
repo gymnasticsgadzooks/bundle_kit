@@ -1,0 +1,93 @@
+{
+    "payload": {
+        "target": "cart.lines.discounts.generate.run",
+        "export": "cart-lines-discounts-generate-run",
+        "input": {
+            "cart": {
+                "lines": [
+                    {
+                        "id": "gid://shopify/CartLine/1",
+                        "quantity": 2,
+                        "cost": {
+                            "subtotalAmount": {
+                                "amount": "1200.0"
+                            }
+                        },
+                        "merchandise": {
+                            "__typename": "ProductVariant",
+                            "id": "gid://shopify/ProductVariant/100",
+                            "product": {
+                                "id": "gid://shopify/Product/1",
+                                "handle": "the-collection-snowboard-hydrogen"
+                            }
+                        }
+                    },
+                    {
+                        "id": "gid://shopify/CartLine/2",
+                        "quantity": 2,
+                        "cost": {
+                            "subtotalAmount": {
+                                "amount": "1259.90"
+                            }
+                        },
+                        "merchandise": {
+                            "__typename": "ProductVariant",
+                            "id": "gid://shopify/ProductVariant/200",
+                            "product": {
+                                "id": "gid://shopify/Product/2",
+                                "handle": "the-multi-managed-snowboard"
+                            }
+                        }
+                    }
+                ]
+            },
+            "shop": {
+                "localTime": {
+                    "date": "2026-02-26"
+                }
+            },
+            "discount": {
+                "discountClasses": [
+                    "ORDER",
+                    "PRODUCT"
+                ],
+                "metafield": {
+                    "value": "{\"id\":\"bundle-mix-match\",\"title\":\"Mix & Match - Any 3\",\"type\":\"MIX_MATCH\",\"discountType\":\"PERCENTAGE\",\"discountValue\":30,\"targetQuantity\":3,\"items\":[{\"productId\":\"gid://shopify/Product/1\",\"requiredQuantity\":1},{\"productId\":\"gid://shopify/Product/2\",\"requiredQuantity\":1}]}"
+                }
+            }
+        },
+        "output": {
+            "operations": [
+                {
+                    "productDiscountsAdd": {
+                        "candidates": [
+                            {
+                                "message": "Mix & Match - Any 3",
+                                "value": {
+                                    "percentage": {
+                                        "value": 30
+                                    }
+                                },
+                                "targets": [
+                                    {
+                                        "cartLine": {
+                                            "id": "gid://shopify/CartLine/1",
+                                            "quantity": 2
+                                        }
+                                    },
+                                    {
+                                        "cartLine": {
+                                            "id": "gid://shopify/CartLine/2",
+                                            "quantity": 1
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "selectionStrategy": "ALL"
+                    }
+                }
+            ]
+        }
+    }
+}

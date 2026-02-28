@@ -1,0 +1,48 @@
+{
+  "payload": {
+    "target": "cart.lines.discounts.generate.run",
+    "export": "cart-lines-discounts-generate-run",
+    "input": {
+      "cart": {
+        "lines": [
+          {
+            "id": "gid://shopify/CartLine/1",
+            "quantity": 3,
+            "cost": { "subtotalAmount": { "amount": "75.0" } },
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/100",
+              "product": { "id": "gid://shopify/Product/1", "handle": "product-a" }
+            }
+          }
+        ]
+      },
+      "shop": { "localTime": { "date": "2026-02-28" } },
+      "discount": {
+        "discountClasses": ["ORDER", "PRODUCT"],
+        "metafield": {
+          "value": "{\"id\":\"volume-1\",\"title\":\"Buy 3+ A (15%)\",\"type\":\"VOLUME\",\"priority\":0,\"discountType\":\"PERCENTAGE\",\"discountValue\":15,\"targetQuantity\":3,\"items\":[{\"productId\":\"gid://shopify/Product/1\",\"requiredQuantity\":1}]}"
+        }
+      }
+    },
+    "output": {
+      "operations": [
+        {
+          "productDiscountsAdd": {
+            "candidates": [
+              {
+                "message": "Buy 3+ A (15%)",
+                "targets": [
+                  { "cartLine": { "id": "gid://shopify/CartLine/1", "quantity": 3 } }
+                ],
+                "value": { "percentage": { "value": 15 } }
+              }
+            ],
+            "selectionStrategy": "ALL"
+          }
+        }
+      ]
+    }
+  }
+}
+

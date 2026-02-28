@@ -1,0 +1,126 @@
+{
+  "payload": {
+    "target": "cart.lines.discounts.generate.run",
+    "export": "cart-lines-discounts-generate-run",
+    "input": {
+      "cart": {
+        "lines": [
+          {
+            "id": "gid://shopify/CartLine/1",
+            "quantity": 8,
+            "cost": {
+              "subtotalAmount": {
+                "amount": "160.0"
+              }
+            },
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/100",
+              "product": {
+                "id": "gid://shopify/Product/1",
+                "handle": "product-a"
+              }
+            }
+          },
+          {
+            "id": "gid://shopify/CartLine/2",
+            "quantity": 1,
+            "cost": {
+              "subtotalAmount": {
+                "amount": "30.0"
+              }
+            },
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/200",
+              "product": {
+                "id": "gid://shopify/Product/2",
+                "handle": "product-b"
+              }
+            }
+          }
+        ]
+      },
+      "shop": {
+        "localTime": {
+          "date": "2026-02-26"
+        }
+      },
+      "discount": {
+        "discountClasses": [
+          "ORDER",
+          "PRODUCT"
+        ],
+        "metafield": {
+          "value": "[{\"id\":\"bundle-fbt\",\"title\":\"A + B 20%\",\"type\":\"FBT\",\"priority\":20,\"discountType\":\"PERCENTAGE\",\"discountValue\":20,\"items\":[{\"productId\":\"gid://shopify/Product/1\",\"requiredQuantity\":1},{\"productId\":\"gid://shopify/Product/2\",\"requiredQuantity\":1}]},{\"id\":\"bundle-classic\",\"title\":\"Buy 4 A Save $8\",\"type\":\"CLASSIC\",\"priority\":10,\"discountType\":\"FIXED_AMOUNT\",\"discountValue\":8,\"items\":[{\"productId\":\"gid://shopify/Product/1\",\"requiredQuantity\":4}]},{\"id\":\"bundle-volume-a\",\"title\":\"10% Off 3 Remaining A\",\"type\":\"VOLUME\",\"discountType\":\"PERCENTAGE\",\"discountValue\":10,\"targetQuantity\":3,\"items\":[{\"productId\":\"gid://shopify/Product/1\",\"requiredQuantity\":1}]}]"
+        }
+      }
+    },
+    "output": {
+      "operations": [
+        {
+          "productDiscountsAdd": {
+            "candidates": [
+              {
+                "message": "A + B 20%",
+                "targets": [
+                  {
+                    "cartLine": {
+                      "id": "gid://shopify/CartLine/1",
+                      "quantity": 1
+                    }
+                  },
+                  {
+                    "cartLine": {
+                      "id": "gid://shopify/CartLine/2",
+                      "quantity": 1
+                    }
+                  }
+                ],
+                "value": {
+                  "percentage": {
+                    "value": 20
+                  }
+                }
+              },
+              {
+                "message": "Buy 4 A Save $8",
+                "targets": [
+                  {
+                    "cartLine": {
+                      "id": "gid://shopify/CartLine/1",
+                      "quantity": 4
+                    }
+                  }
+                ],
+                "value": {
+                  "fixedAmount": {
+                    "amount": 8,
+                    "appliesToEachItem": false
+                  }
+                }
+              },
+              {
+                "message": "10% Off 3 Remaining A",
+                "targets": [
+                  {
+                    "cartLine": {
+                      "id": "gid://shopify/CartLine/1",
+                      "quantity": 3
+                    }
+                  }
+                ],
+                "value": {
+                  "percentage": {
+                    "value": 10
+                  }
+                }
+              }
+            ],
+            "selectionStrategy": "ALL"
+          }
+        }
+      ]
+    }
+  }
+}

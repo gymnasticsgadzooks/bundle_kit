@@ -1,0 +1,59 @@
+{
+  "payload": {
+    "target": "cart.lines.discounts.generate.run",
+    "export": "cart-lines-discounts-generate-run",
+    "input": {
+      "cart": {
+        "lines": [
+          {
+            "id": "gid://shopify/CartLine/1",
+            "quantity": 1,
+            "cost": { "subtotalAmount": { "amount": "1025.00" } },
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/oxygen",
+              "product": { "id": "gid://shopify/Product/1", "handle": "oxygen" }
+            }
+          },
+          {
+            "id": "gid://shopify/CartLine/2",
+            "quantity": 1,
+            "cost": { "subtotalAmount": { "amount": "629.95" } },
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/multi",
+              "product": { "id": "gid://shopify/Product/2", "handle": "multi-managed" }
+            }
+          },
+          {
+            "id": "gid://shopify/CartLine/3",
+            "quantity": 2,
+            "cost": { "subtotalAmount": { "amount": "1499.90" } },
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/liquid",
+              "product": { "id": "gid://shopify/Product/3", "handle": "liquid" }
+            }
+          },
+          {
+            "id": "gid://shopify/CartLine/4",
+            "quantity": 2,
+            "cost": { "subtotalAmount": { "amount": "1200.00" } },
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/hydrogen",
+              "product": { "id": "gid://shopify/Product/4", "handle": "hydrogen" }
+            }
+          }
+        ]
+      },
+      "shop": { "localTime": { "date": "2026-02-28" } },
+      "discount": {
+        "discountClasses": ["ORDER", "PRODUCT"],
+        "metafield": {
+          "value": "[{\"id\":\"bundle-mix\",\"title\":\"Mix & Match 3 (45%)\",\"type\":\"MIX_MATCH\",\"priority\":30,\"discountType\":\"PERCENTAGE\",\"discountValue\":45,\"targetQuantity\":3,\"items\":[{\"productId\":\"gid://shopify/Product/1\",\"requiredQuantity\":1},{\"productId\":\"gid://shopify/Product/2\",\"requiredQuantity\":1},{\"productId\":\"gid://shopify/Product/3\",\"requiredQuantity\":1},{\"productId\":\"gid://shopify/Product/4\",\"requiredQuantity\":1}]},{\"id\":\"bundle-fbt\",\"title\":\"FBT - 1 (25%)\",\"type\":\"FBT\",\"priority\":10,\"discountType\":\"PERCENTAGE\",\"discountValue\":25,\"items\":[{\"productId\":\"gid://shopify/Product/1\",\"requiredQuantity\":1},{\"productId\":\"gid://shopify/Product/3\",\"requiredQuantity\":1},{\"productId\":\"gid://shopify/Product/4\",\"requiredQuantity\":1}]}]"
+        }
+      }
+    }
+  }
+}

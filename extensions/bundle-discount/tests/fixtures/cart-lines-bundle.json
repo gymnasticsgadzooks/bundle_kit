@@ -1,0 +1,93 @@
+{
+    "payload": {
+        "target": "cart.lines.discounts.generate.run",
+        "export": "cart-lines-discounts-generate-run",
+        "input": {
+            "cart": {
+                "lines": [
+                    {
+                        "id": "gid://shopify/CartLine/1",
+                        "quantity": 2,
+                        "cost": {
+                            "subtotalAmount": {
+                                "amount": "20.0"
+                            }
+                        },
+                        "merchandise": {
+                            "__typename": "ProductVariant",
+                            "id": "gid://shopify/ProductVariant/100",
+                            "product": {
+                                "id": "gid://shopify/Product/1",
+                                "handle": "product-a"
+                            }
+                        }
+                    },
+                    {
+                        "id": "gid://shopify/CartLine/2",
+                        "quantity": 1,
+                        "cost": {
+                            "subtotalAmount": {
+                                "amount": "15.0"
+                            }
+                        },
+                        "merchandise": {
+                            "__typename": "ProductVariant",
+                            "id": "gid://shopify/ProductVariant/200",
+                            "product": {
+                                "id": "gid://shopify/Product/2",
+                                "handle": "product-b"
+                            }
+                        }
+                    }
+                ]
+            },
+            "shop": {
+                "localTime": {
+                    "date": "2026-02-26"
+                }
+            },
+            "discount": {
+                "discountClasses": [
+                    "ORDER",
+                    "PRODUCT"
+                ],
+                "metafield": {
+                    "value": "{\"id\":\"bundle-1\",\"title\":\"My FBT Bundle\",\"type\":\"FBT\",\"discountType\":\"PERCENTAGE\",\"discountValue\":15,\"items\":[{\"productId\":\"gid://shopify/Product/1\",\"variantId\":\"gid://shopify/ProductVariant/100\",\"requiredQuantity\":1},{\"productId\":\"gid://shopify/Product/2\",\"variantId\":\"gid://shopify/ProductVariant/200\",\"requiredQuantity\":1}]}"
+                }
+            }
+        },
+        "output": {
+            "operations": [
+                {
+                    "productDiscountsAdd": {
+                        "candidates": [
+                            {
+                                "message": "My FBT Bundle",
+                                "value": {
+                                    "percentage": {
+                                        "value": 15
+                                    }
+                                },
+                                "targets": [
+                                    {
+                                        "cartLine": {
+                                            "id": "gid://shopify/CartLine/1",
+                                            "quantity": 1
+                                        }
+                                    },
+                                    {
+                                        "cartLine": {
+                                            "id": "gid://shopify/CartLine/2",
+                                            "quantity": 1
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "selectionStrategy": "ALL"
+                    }
+                }
+            ]
+        }
+    }
+}

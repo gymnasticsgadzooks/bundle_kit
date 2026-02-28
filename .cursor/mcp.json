@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "supabase": {
+      "command": "bash",
+      "args": [
+        "./scripts/run-supabase-mcp.sh"
+      ]
+    }
+  }
+}

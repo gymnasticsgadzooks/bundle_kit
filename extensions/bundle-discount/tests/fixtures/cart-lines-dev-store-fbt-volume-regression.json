@@ -1,0 +1,149 @@
+{
+  "payload": {
+    "target": "cart.lines.discounts.generate.run",
+    "export": "cart-lines-discounts-generate-run",
+    "input": {
+      "cart": {
+        "lines": [
+          {
+            "id": "gid://shopify/CartLine/1",
+            "quantity": 3,
+            "cost": {
+              "subtotalAmount": {
+                "amount": "74.85"
+              }
+            },
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/100",
+              "product": {
+                "id": "gid://shopify/Product/10238996021380",
+                "handle": "selling-plans-ski-wax"
+              }
+            }
+          },
+          {
+            "id": "gid://shopify/CartLine/2",
+            "quantity": 1,
+            "cost": {
+              "subtotalAmount": {
+                "amount": "1025.00"
+              }
+            },
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/200",
+              "product": {
+                "id": "gid://shopify/Product/10238996152452",
+                "handle": "the-collection-snowboard-oxygen"
+              }
+            }
+          },
+          {
+            "id": "gid://shopify/CartLine/3",
+            "quantity": 1,
+            "cost": {
+              "subtotalAmount": {
+                "amount": "749.95"
+              }
+            },
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/300",
+              "product": {
+                "id": "gid://shopify/Product/10238996250756",
+                "handle": "the-collection-snowboard-liquid"
+              }
+            }
+          },
+          {
+            "id": "gid://shopify/CartLine/4",
+            "quantity": 1,
+            "cost": {
+              "subtotalAmount": {
+                "amount": "600.00"
+              }
+            },
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/400",
+              "product": {
+                "id": "gid://shopify/Product/10238995988612",
+                "handle": "the-collection-snowboard-hydrogen"
+              }
+            }
+          }
+        ]
+      },
+      "shop": {
+        "localTime": {
+          "date": "2026-02-27"
+        }
+      },
+      "discount": {
+        "discountClasses": [
+          "ORDER",
+          "PRODUCT"
+        ],
+        "metafield": {
+          "value": "[{\"id\":\"c13d2a1c-6442-42d2-80df-4f5b5246e525\",\"title\":\"FBT - 1\",\"type\":\"FBT\",\"priority\":0,\"discountType\":\"PERCENTAGE\",\"discountValue\":25,\"targetQuantity\":null,\"items\":[{\"productId\":\"gid://shopify/Product/10238995988612\",\"requiredQuantity\":1},{\"productId\":\"gid://shopify/Product/10238996250756\",\"requiredQuantity\":1},{\"productId\":\"gid://shopify/Product/10238996152452\",\"requiredQuantity\":1}]},{\"id\":\"e82478d4-d01b-4809-9155-4d3548f33d0f:tier:2\",\"title\":\"Buy More Save More (Buy 2+)\",\"type\":\"VOLUME\",\"priority\":0,\"discountType\":\"PERCENTAGE\",\"discountValue\":10,\"targetQuantity\":2,\"items\":[{\"productId\":\"gid://shopify/Product/10238996021380\",\"requiredQuantity\":1}]},{\"id\":\"e82478d4-d01b-4809-9155-4d3548f33d0f:tier:3\",\"title\":\"Buy More Save More (Buy 3+)\",\"type\":\"VOLUME\",\"priority\":0,\"discountType\":\"PERCENTAGE\",\"discountValue\":15,\"targetQuantity\":3,\"items\":[{\"productId\":\"gid://shopify/Product/10238996021380\",\"requiredQuantity\":1}]},{\"id\":\"e82478d4-d01b-4809-9155-4d3548f33d0f:tier:4\",\"title\":\"Buy More Save More (Buy 4+)\",\"type\":\"VOLUME\",\"priority\":0,\"discountType\":\"PERCENTAGE\",\"discountValue\":20,\"targetQuantity\":4,\"items\":[{\"productId\":\"gid://shopify/Product/10238996021380\",\"requiredQuantity\":1}]}]"
+        }
+      }
+    },
+    "output": {
+      "operations": [
+        {
+          "productDiscountsAdd": {
+            "candidates": [
+              {
+                "message": "FBT - 1",
+                "targets": [
+                  {
+                    "cartLine": {
+                      "id": "gid://shopify/CartLine/4",
+                      "quantity": 1
+                    }
+                  },
+                  {
+                    "cartLine": {
+                      "id": "gid://shopify/CartLine/3",
+                      "quantity": 1
+                    }
+                  },
+                  {
+                    "cartLine": {
+                      "id": "gid://shopify/CartLine/2",
+                      "quantity": 1
+                    }
+                  }
+                ],
+                "value": {
+                  "percentage": {
+                    "value": 25
+                  }
+                }
+              },
+              {
+                "message": "Buy More Save More (Buy 3+)",
+                "targets": [
+                  {
+                    "cartLine": {
+                      "id": "gid://shopify/CartLine/1",
+                      "quantity": 3
+                    }
+                  }
+                ],
+                "value": {
+                  "percentage": {
+                    "value": 15
+                  }
+                }
+              }
+            ],
+            "selectionStrategy": "ALL"
+          }
+        }
+      ]
+    }
+  }
+}

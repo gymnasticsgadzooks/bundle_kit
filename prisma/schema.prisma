@@ -1,0 +1,81 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Note that some adapters may set a maximum length for the String type by default, please ensure your strings are long
+// enough when changing adapters.
+// See https://www.prisma.io/docs/orm/reference/prisma-schema-reference#string for more information
+datasource db {
+  provider = "sqlite"
+  url      = "file:dev.sqlite"
+}
+
+model Session {
+  id                  String    @id
+  shop                String
+  state               String
+  isOnline            Boolean   @default(false)
+  scope               String?
+  expires             DateTime?
+  accessToken         String
+  userId              BigInt?
+  firstName           String?
+  lastName            String?
+  email               String?
+  accountOwner        Boolean   @default(false)
+  locale              String?
+  collaborator        Boolean?  @default(false)
+  emailVerified       Boolean?  @default(false)
+  refreshToken        String?
+  refreshTokenExpires DateTime?
+}
+
+model Bundle {
+  id            String       @id @default(uuid())
+  shop          String
+  title         String
+  type          String       // FBT, VOLUME, MIX_MATCH, CLASSIC
+  status        String       @default("DRAFT") // ACTIVE, DRAFT
+  discountType  String?      // PERCENTAGE, FIXED_AMOUNT, FIXED_PRICE
+  discountValue Decimal?
+  targetQuantity Int?        // For Mix & Match: Buy X items
+  priority      Int          @default(0)
+  stacksWithProductDiscounts  Boolean @default(true)
+  stacksWithOrderDiscounts    Boolean @default(true)
+  stacksWithShippingDiscounts Boolean @default(true)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  items         BundleItem[]
+  tiers         BundleTier[]
+}
+
+model BundleItem {
+  id               String  @id @default(uuid())
+  bundleId         String
+  bundle           Bundle  @relation(fields: [bundleId], references: [id], onDelete: Cascade)
+  productId        String?
+  collectionId     String? // For Mix & Match collection level
+  variantId        String?
+  requiredQuantity Int     @default(1)
+}
+
+model BundleTier {
+  id            String  @id @default(uuid())
+  bundleId      String
+  bundle        Bundle  @relation(fields: [bundleId], references: [id], onDelete: Cascade)
+  quantity      Int     // Buy X (min)
+  quantityMax   Int?    // Optional: up to Y (max)
+  discountType  String  // PERCENTAGE, FIXED_AMOUNT
+  discountValue Decimal // get Y% / $Y off
+}
+
+model ShopConfig {
+  id                   String   @id @default(uuid())
+  shop                 String   @unique
+  consolidatedNodeId   String?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+}

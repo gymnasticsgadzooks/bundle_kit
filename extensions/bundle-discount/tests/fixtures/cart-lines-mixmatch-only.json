@@ -1,0 +1,59 @@
+{
+  "payload": {
+    "target": "cart.lines.discounts.generate.run",
+    "export": "cart-lines-discounts-generate-run",
+    "input": {
+      "cart": {
+        "lines": [
+          {
+            "id": "gid://shopify/CartLine/1",
+            "quantity": 1,
+            "cost": { "subtotalAmount": { "amount": "20.0" } },
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/100",
+              "product": { "id": "gid://shopify/Product/1", "handle": "product-a" }
+            }
+          },
+          {
+            "id": "gid://shopify/CartLine/2",
+            "quantity": 2,
+            "cost": { "subtotalAmount": { "amount": "50.0" } },
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/200",
+              "product": { "id": "gid://shopify/Product/2", "handle": "product-b" }
+            }
+          }
+        ]
+      },
+      "shop": { "localTime": { "date": "2026-02-28" } },
+      "discount": {
+        "discountClasses": ["ORDER", "PRODUCT"],
+        "metafield": {
+          "value": "{\"id\":\"mix-1\",\"title\":\"Mix & Match Any 3 (30%)\",\"type\":\"MIX_MATCH\",\"priority\":0,\"discountType\":\"PERCENTAGE\",\"discountValue\":30,\"targetQuantity\":3,\"items\":[{\"productId\":\"gid://shopify/Product/1\",\"requiredQuantity\":1},{\"productId\":\"gid://shopify/Product/2\",\"requiredQuantity\":1}]}"
+        }
+      }
+    },
+    "output": {
+      "operations": [
+        {
+          "productDiscountsAdd": {
+            "candidates": [
+              {
+                "message": "Mix & Match Any 3 (30%)",
+                "targets": [
+                  { "cartLine": { "id": "gid://shopify/CartLine/1", "quantity": 1 } },
+                  { "cartLine": { "id": "gid://shopify/CartLine/2", "quantity": 2 } }
+                ],
+                "value": { "percentage": { "value": 30 } }
+              }
+            ],
+            "selectionStrategy": "ALL"
+          }
+        }
+      ]
+    }
+  }
+}
+

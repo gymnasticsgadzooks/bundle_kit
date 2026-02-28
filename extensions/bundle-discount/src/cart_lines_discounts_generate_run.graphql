@@ -1,0 +1,34 @@
+query CartInput {
+  shop {
+    localTime {
+      date
+    }
+  }
+  cart {
+    lines {
+      id
+      quantity
+      cost {
+        subtotalAmount {
+          amount
+        }
+      }
+      merchandise {
+        __typename
+        ... on ProductVariant {
+          id
+          product {
+            id
+            handle
+          }
+        }
+      }
+    }
+  }
+  discount {
+    discountClasses
+    metafield(namespace: "bundle_app", key: "config") {
+      value
+    }
+  }
+}

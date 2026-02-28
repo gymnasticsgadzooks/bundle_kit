@@ -1,0 +1,68 @@
+{
+  "payload": {
+    "target": "cart.lines.discounts.generate.run",
+    "export": "cart-lines-discounts-generate-run",
+    "input": {
+      "cart": {
+        "lines": [
+          {
+            "id": "gid://shopify/CartLine/1",
+            "quantity": 1,
+            "cost": { "subtotalAmount": { "amount": "20.0" } },
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/100",
+              "product": { "id": "gid://shopify/Product/1", "handle": "product-a" }
+            }
+          },
+          {
+            "id": "gid://shopify/CartLine/2",
+            "quantity": 1,
+            "cost": { "subtotalAmount": { "amount": "10.0" } },
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/200",
+              "product": { "id": "gid://shopify/Product/2", "handle": "product-b" }
+            }
+          },
+          {
+            "id": "gid://shopify/CartLine/3",
+            "quantity": 1,
+            "cost": { "subtotalAmount": { "amount": "15.0" } },
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/300",
+              "product": { "id": "gid://shopify/Product/3", "handle": "product-c" }
+            }
+          }
+        ]
+      },
+      "shop": { "localTime": { "date": "2026-02-28" } },
+      "discount": {
+        "discountClasses": ["ORDER", "PRODUCT"],
+        "metafield": {
+          "value": "[{\"id\":\"bundle-fbt\",\"title\":\"A + B (25%)\",\"type\":\"FBT\",\"priority\":20,\"discountType\":\"PERCENTAGE\",\"discountValue\":25,\"items\":[{\"productId\":\"gid://shopify/Product/1\",\"requiredQuantity\":1},{\"productId\":\"gid://shopify/Product/2\",\"requiredQuantity\":1}]},{\"id\":\"bundle-mix\",\"title\":\"Mix & Match - Any 3 (30%)\",\"type\":\"MIX_MATCH\",\"priority\":10,\"discountType\":\"PERCENTAGE\",\"discountValue\":30,\"targetQuantity\":3,\"items\":[{\"productId\":\"gid://shopify/Product/1\",\"requiredQuantity\":1},{\"productId\":\"gid://shopify/Product/2\",\"requiredQuantity\":1},{\"productId\":\"gid://shopify/Product/3\",\"requiredQuantity\":1}]}]"
+        }
+      }
+    },
+    "output": {
+      "operations": [
+        {
+          "productDiscountsAdd": {
+            "candidates": [
+              {
+                "message": "A + B (25%)",
+                "targets": [
+                  { "cartLine": { "id": "gid://shopify/CartLine/1", "quantity": 1 } },
+                  { "cartLine": { "id": "gid://shopify/CartLine/2", "quantity": 1 } }
+                ],
+                "value": { "percentage": { "value": 25 } }
+              }
+            ],
+            "selectionStrategy": "ALL"
+          }
+        }
+      ]
+    }
+  }
+}
