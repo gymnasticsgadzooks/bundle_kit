@@ -1,6 +1,6 @@
 # BundleKit — Project Progress
 
-> **Last Updated:** 2026-02-27  
+> **Last Updated:** 2026-02-28  
 > **Start Command:** `npm run dev` (from project root)
 
 ## Current Architecture
@@ -15,7 +15,7 @@ BundleKit is a Shopify Remix admin app where:
 | Layer | Current ownership |
 | --- | --- |
 | Admin app | Remix + Polaris (`app/routes/*`) |
-| Persistence | Prisma + SQLite (`prisma/schema.prisma`) |
+| Persistence | Prisma + PostgreSQL (Supabase; `prisma/schema.prisma`) |
 | Discount execution | `extensions/bundle-discount` function |
 | Theme integration | `product.metafields.bundle_app.config` |
 
@@ -58,6 +58,14 @@ For full integration and release-readiness details, see:
 - Webhook-driven sync:
   - `app/routes/webhooks.collections.update.tsx`
 
+## Vercel Setup (Phase 4)
+
+- `vercel.json` — build config (buildCommand, installCommand)
+- `docs/vercel-setup.md` — connect project + env vars guide
+- `scripts/vercel-env-sync.sh` — sync `.env` → Vercel env vars
+- `npm run vercel:link` — link local project to Vercel
+- `npm run vercel:env-sync production` — push env vars to production
+
 ## Remaining Work (Post-Phase 5)
 
 - Harden automated tests for app + function paths in local CI/dev environments.
@@ -74,4 +82,4 @@ Per release candidate, record evidence links and outcomes below:
 
 | Date | Version / branch | `npm run validate:ci` | Dev store admin flow | Dev store cart/checkout flow | Recovery re-sync flow | Evidence links |
 | --- | --- | --- | --- | --- | --- | --- |
-| _TBD_ | _TBD_ | _TBD_ | _TBD_ | _TBD_ | _TBD_ | _Add screenshots + command output links_ |
+| 2026-02-28 | main | PASS | PASS | PASS | PASS | [Manual evidence checklist](docs/manual-evidence-checklist.md) |

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import type { LoaderFunctionArgs, ActionFunctionArgs } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
+import type { LoaderFunctionArgs, ActionFunctionArgs } from "@vercel/remix";
+import { json, redirect } from "@vercel/remix";
 import { useSubmit, useActionData, useNavigate, useNavigation, useLoaderData } from "@remix-run/react";
 import {
     Page,

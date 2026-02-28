@@ -1,5 +1,5 @@
-import type { LoaderFunctionArgs, ActionFunctionArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
+import type { LoaderFunctionArgs, ActionFunctionArgs } from "@vercel/remix";
+import { json } from "@vercel/remix";
 import { useLoaderData, useNavigate, useSubmit } from "@remix-run/react";
 import { syncProductMetafieldsForBundleItems } from "../utils/metafields.server";
 import { syncConsolidatedDiscountNode } from "../utils/settings.server";
@@ -21,6 +21,7 @@ import { TitleBar } from "@shopify/app-bridge-react";
 import { authenticate } from "../shopify.server";
 import prisma from "../db.server";
 import { useState, useCallback, useEffect } from "react";
+import type { DragEndEvent } from '@dnd-kit/core';
 import {
   DndContext,
   closestCenter,
@@ -28,7 +29,6 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
-  DragEndEvent,
 } from '@dnd-kit/core';
 import {
   arrayMove,

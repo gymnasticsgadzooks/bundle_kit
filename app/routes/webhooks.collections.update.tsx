@@ -1,4 +1,4 @@
-import type { ActionFunctionArgs } from "@remix-run/node";
+import type { ActionFunctionArgs } from "@vercel/remix";
 import { authenticate } from "../shopify.server";
 import { syncBundlesAffectedByEntity } from "../utils/settings.server";
 

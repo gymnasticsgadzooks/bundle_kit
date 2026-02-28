@@ -8,7 +8,16 @@ node_modules/
 
 # Build / cache
 dist/
+build/
 .shopify/
+.vercel/
+
+# Local DB
+prisma/*.sqlite
+prisma/*.sqlite-journal
+
+# Supabase temp
+supabase/.temp/
 
 # OS
 .DS_Store

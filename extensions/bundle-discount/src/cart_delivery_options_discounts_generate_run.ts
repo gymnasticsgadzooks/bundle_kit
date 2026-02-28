@@ -1,8 +1,10 @@
+import type {
+  DeliveryInput,
+  CartDeliveryOptionsDiscountsGenerateRunResult,
+} from "../generated/api";
 import {
   DeliveryDiscountSelectionStrategy,
   DiscountClass,
-  DeliveryInput,
-  CartDeliveryOptionsDiscountsGenerateRunResult,
 } from "../generated/api";
 
 export function cartDeliveryOptionsDiscountsGenerateRun(

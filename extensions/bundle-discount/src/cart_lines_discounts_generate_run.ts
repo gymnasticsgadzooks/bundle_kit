@@ -1,11 +1,13 @@
-import {
-  DiscountClass,
+import type {
   OrderDiscountCandidate,
-  OrderDiscountSelectionStrategy,
-  ProductDiscountSelectionStrategy,
   CartInput,
   CartLinesDiscountsGenerateRunResult,
-  ProductDiscountCandidate
+  ProductDiscountCandidate,
+} from '../generated/api';
+import {
+  DiscountClass,
+  OrderDiscountSelectionStrategy,
+  ProductDiscountSelectionStrategy,
 } from '../generated/api';
 
 interface ActiveBundleConfig {
