@@ -2,7 +2,7 @@
 
 client_id = "8cebe8738c301308a24387f8c70b9591"
 name = "BundleKit"
-application_url = "https://example.com"
+application_url = "https://bundle-kit.vercel.app"
 embedded = true
 
 [build]
@@ -28,5 +28,5 @@ api_version = "2026-04"
 scopes = "write_products,read_discounts,write_discounts"
 
 [auth]
-redirect_urls = [ "https://example.com/api/auth" ]
+redirect_urls = [ "https://bundle-kit.vercel.app/auth/callback" ]
 

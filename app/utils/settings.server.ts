@@ -241,7 +241,10 @@ export async function registerBundleMetafieldDefinitions(admin: any) {
                 key: "config",
                 ownerType: "PRODUCT",
                 type: "json",
-                description: "BundleKit product-level bundle config payload"
+                description: "BundleKit product-level bundle config payload",
+                access: {
+                    storefront: "PUBLIC_READ"
+                }
             }
         }
     });
