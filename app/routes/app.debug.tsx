@@ -13,16 +13,6 @@ export const action = async ({ request }: LoaderFunctionArgs) => {
     return json({ resynced: true, result });
 };
 
-async function postDebugLog(_payload: {
-    runId: string;
-    hypothesisId: string;
-    location: string;
-    message: string;
-    data: Record<string, unknown>;
-}) {
-    // Intentionally no-op. (Used during an interactive debug session.)
-}
-
 interface DiagnosticBundle {
     db: {
         id: string;
@@ -148,28 +138,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
             }
         }
     }
-
-    await postDebugLog({
-        runId: "diag-2",
-        hypothesisId: "DIAG",
-        location: "app/routes/app.debug.tsx:loader",
-        message: "Consolidated node diagnostic",
-        data: {
-            shop: session.shop,
-            shopConfigConsolidatedNodeId: shopConfig?.consolidatedNodeId ?? null,
-            bundleCount: bundles.length,
-            allFunctions: allFunctions.map((f: any) => ({ id: f.id, title: f.title, apiType: f.apiType })),
-            consolidatedNodeExists: !!consolidatedNode,
-            consolidatedNodeStatus: consolidatedNode?.discount?.status ?? null,
-            consolidatedNodeDiscountClasses: consolidatedNode?.discount?.discountClasses ?? null,
-            consolidatedNodeFunctionId: consolidatedNode?.discount?.appDiscountType?.functionId ?? null,
-            consolidatedNodeFunctionTitle: consolidatedNode?.discount?.appDiscountType?.title ?? null,
-            consolidatedNodeHasMetafield: !!consolidatedNode?.metafield?.value,
-            consolidatedNodeMetafieldLength: consolidatedNode?.metafield?.value?.length ?? 0,
-            consolidatedNodeMetafieldPreview: (consolidatedNode?.metafield?.value ?? "").slice(0, 220),
-            consolidatedIssues,
-        },
-    });
 
     const diagnostics: DiagnosticBundle[] = [];
 
@@ -357,19 +325,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
             },
         });
     }
-
-    await postDebugLog({
-        runId: "diag-1",
-        hypothesisId: "DIAG",
-        location: "app/routes/app.debug.tsx:loader",
-        message: "Full bundle diagnostic dump",
-        data: {
-            shop: session.shop,
-            bundleCount: bundles.length,
-            allFunctions: allFunctions.map((f: any) => ({ id: f.id, title: f.title, apiType: f.apiType })),
-            diagnostics: diagnostics as any,
-        },
-    });
 
     return json({
         shop: session.shop,

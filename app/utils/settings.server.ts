@@ -56,9 +56,6 @@ async function resolveFunctionId(admin: any): Promise<string> {
     `);
     const funcsReqJson = await funcsReq.json();
     const nodes = funcsReqJson.data?.shopifyFunctions?.nodes || [];
-    // #region agent log
-    fetch('http://127.0.0.1:7665/ingest/10e41b89-e35d-4666-ad18-f1b09f5cc832',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'e4134a'},body:JSON.stringify({sessionId:'e4134a',runId:'pre-fix',hypothesisId:'H6',location:'app/utils/settings.server.ts:resolveFunctionId:nodes',message:'shopify functions discovered',data:{functionCount:nodes.length,functions:nodes.map((n:any)=>({id:n.id,title:n.title,apiType:n.apiType}))},timestamp:Date.now()})}).catch(()=>{});
-    // #endregion
     const discountFunc = nodes.find((n: any) => {
         const title = n.title.toLowerCase();
         const apiType = n.apiType.toLowerCase();
@@ -72,9 +69,6 @@ async function resolveFunctionId(admin: any): Promise<string> {
     if (!discountFunc?.id) {
         throw new Error(`Could not find Shopify Function ID. Available functions: ${JSON.stringify(nodes)}`);
     }
-    // #region agent log
-    fetch('http://127.0.0.1:7665/ingest/10e41b89-e35d-4666-ad18-f1b09f5cc832',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'e4134a'},body:JSON.stringify({sessionId:'e4134a',runId:'pre-fix',hypothesisId:'H6',location:'app/utils/settings.server.ts:resolveFunctionId:selected',message:'selected function id',data:{selected:{id:discountFunc.id,title:discountFunc.title,apiType:discountFunc.apiType}},timestamp:Date.now()})}).catch(()=>{});
-    // #endregion
     return discountFunc.id;
 }
 
@@ -176,7 +170,7 @@ async function cleanupConsolidatedDiscountsByTitle(
 
 async function auditConsolidatedDiscountState(admin: any, shop: string) {
     try {
-        const auditRes = await admin.graphql(`
+        await admin.graphql(`
             #graphql
             query AuditConsolidatedDiscount($query: String!, $namespace: String!, $key: String!) {
                 discountNodes(query: $query, first: 20) {
@@ -211,15 +205,8 @@ async function auditConsolidatedDiscountState(admin: any, shop: string) {
                 key: "config",
             },
         });
-        const auditData = await auditRes.json();
-        const nodes = auditData?.data?.discountNodes?.nodes || [];
-        // #region agent log
-        fetch('http://127.0.0.1:7665/ingest/10e41b89-e35d-4666-ad18-f1b09f5cc832',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'e4134a'},body:JSON.stringify({sessionId:'e4134a',runId:'post-fix',hypothesisId:'H11',location:'app/utils/settings.server.ts:auditConsolidatedDiscountState',message:'consolidated discount audit',data:{shop,nodeCount:nodes.length,nodes:nodes.map((n:any)=>({id:n.id,typename:n.discount?.__typename,title:n.discount?.title,status:n.discount?.status,startsAt:n.discount?.startsAt,endsAt:n.discount?.endsAt,discountClasses:n.discount?.discountClasses,combinesWith:n.discount?.combinesWith,hasMetafield:Boolean(n.discount?.metafield),metafieldValueLength:n.discount?.metafield?.value?.length||0}))},timestamp:Date.now()})}).catch(()=>{});
-        // #endregion
     } catch (error: any) {
-        // #region agent log
-        fetch('http://127.0.0.1:7665/ingest/10e41b89-e35d-4666-ad18-f1b09f5cc832',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'e4134a'},body:JSON.stringify({sessionId:'e4134a',runId:'post-fix',hypothesisId:'H11',location:'app/utils/settings.server.ts:auditConsolidatedDiscountState:error',message:'consolidated discount audit failed',data:{shop,errorMessage:error?.message||String(error)},timestamp:Date.now()})}).catch(()=>{});
-        // #endregion
+        console.warn(`BundleKit: auditConsolidatedDiscountState failed: ${error?.message || error}`);
     }
 }
 
@@ -266,9 +253,6 @@ async function upsertConsolidatedNode(
 
     const existingNumericId = shopConfig.consolidatedNodeId;
     const existingGid = existingNumericId ? `gid://shopify/DiscountAutomaticApp/${existingNumericId}` : null;
-    // #region agent log
-    fetch('http://127.0.0.1:7665/ingest/10e41b89-e35d-4666-ad18-f1b09f5cc832',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'e4134a'},body:JSON.stringify({sessionId:'e4134a',runId:'pre-fix',hypothesisId:'H4',location:'app/utils/settings.server.ts:upsertConsolidatedNode:entry',message:'upsert consolidated node',data:{shop,existingNumericId,hasExistingGid:Boolean(existingGid),bundleCount:bundleConfigs.length,payloadBytes,combinesWith},timestamp:Date.now()})}).catch(()=>{});
-    // #endregion
 
     if (existingGid) {
         try {
@@ -291,9 +275,6 @@ async function upsertConsolidatedNode(
                 }
             });
             const updateData = await updateRes.json();
-            // #region agent log
-            fetch('http://127.0.0.1:7665/ingest/10e41b89-e35d-4666-ad18-f1b09f5cc832',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'e4134a'},body:JSON.stringify({sessionId:'e4134a',runId:'pre-fix',hypothesisId:'H8',location:'app/utils/settings.server.ts:upsertConsolidatedNode:updateResponse',message:'update mutation response',data:{shop,existingGid,response:updateData?.data?.discountAutomaticAppUpdate,userErrors:updateData?.data?.discountAutomaticAppUpdate?.userErrors||[]},timestamp:Date.now()})}).catch(()=>{});
-            // #endregion
             const updateErrors = updateData.data?.discountAutomaticAppUpdate?.userErrors || [];
             if (updateErrors.length > 0) {
                 throw new Error(`Failed to update consolidated discount node: ${JSON.stringify(updateErrors)}`);
@@ -322,13 +303,10 @@ async function upsertConsolidatedNode(
             });
             const mfSetData = await metafieldSetRes.json();
             const mfErrors = mfSetData.data?.metafieldsSet?.userErrors || [];
-            // #region agent log
-            fetch('http://127.0.0.1:7665/ingest/10e41b89-e35d-4666-ad18-f1b09f5cc832',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'e4134a'},body:JSON.stringify({sessionId:'e4134a',runId:'post-fix',hypothesisId:'H9',location:'app/utils/settings.server.ts:upsertConsolidatedNode:updateMetafieldSet',message:'update metafield set response',data:{shop,ownerId:updateDiscountNodeGid,userErrors:mfErrors},timestamp:Date.now()})}).catch(()=>{});
-            // #endregion
             if (mfErrors.length > 0) {
                 throw new Error(`Failed to update consolidated node metafield: ${JSON.stringify(mfErrors)}`);
             }
-            const updateMetafieldCheckRes = await admin.graphql(`
+            await admin.graphql(`
                 #graphql
                 query DiscountNodeMetafieldCheck($id: ID!, $namespace: String!, $key: String!) {
                     node(id: $id) {
@@ -344,20 +322,10 @@ async function upsertConsolidatedNode(
             `, {
                 variables: { id: updateDiscountNodeGid, namespace: "bundle_app", key: "config" }
             });
-            const updateMetafieldCheckData = await updateMetafieldCheckRes.json();
-            // #region agent log
-            fetch('http://127.0.0.1:7665/ingest/10e41b89-e35d-4666-ad18-f1b09f5cc832',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'e4134a'},body:JSON.stringify({sessionId:'e4134a',runId:'post-fix',hypothesisId:'H10',location:'app/utils/settings.server.ts:upsertConsolidatedNode:updateMetafieldCheck',message:'update metafield check',data:{shop,discountNodeId:updateDiscountNodeGid,hasMetafield:Boolean(updateMetafieldCheckData?.data?.node?.metafield),metafieldValueLength:updateMetafieldCheckData?.data?.node?.metafield?.value?.length||0,metafieldPreview:(updateMetafieldCheckData?.data?.node?.metafield?.value||'').slice(0,180)},timestamp:Date.now()})}).catch(()=>{});
-            // #endregion
-            // #region agent log
-            fetch('http://127.0.0.1:7665/ingest/10e41b89-e35d-4666-ad18-f1b09f5cc832',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'e4134a'},body:JSON.stringify({sessionId:'e4134a',runId:'pre-fix',hypothesisId:'H4',location:'app/utils/settings.server.ts:upsertConsolidatedNode:updateSuccess',message:'updated consolidated node',data:{shop,nodeId:existingNumericId,payloadBytes},timestamp:Date.now()})}).catch(()=>{});
-            // #endregion
             await auditConsolidatedDiscountState(admin, shop);
             return { mode: "updated", nodeId: existingNumericId, payloadBytes };
         } catch (err: any) {
             console.warn(`BundleKit: Existing consolidated node appears stale (${existingGid}); recreating. ${err?.message || err}`);
-            // #region agent log
-            fetch('http://127.0.0.1:7665/ingest/10e41b89-e35d-4666-ad18-f1b09f5cc832',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'e4134a'},body:JSON.stringify({sessionId:'e4134a',runId:'pre-fix',hypothesisId:'H5',location:'app/utils/settings.server.ts:upsertConsolidatedNode:updateCatch',message:'update path failed',data:{shop,existingGid,errorMessage:err?.message||String(err)},timestamp:Date.now()})}).catch(()=>{});
-            // #endregion
             if (existingNumericId) {
                 await deleteBundleDiscountNode(existingNumericId, admin);
             }
@@ -393,9 +361,6 @@ async function upsertConsolidatedNode(
         }
     });
     const createData = await createRes.json();
-    // #region agent log
-    fetch('http://127.0.0.1:7665/ingest/10e41b89-e35d-4666-ad18-f1b09f5cc832',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'e4134a'},body:JSON.stringify({sessionId:'e4134a',runId:'pre-fix',hypothesisId:'H8',location:'app/utils/settings.server.ts:upsertConsolidatedNode:createResponse',message:'create mutation response',data:{shop,functionId,response:createData?.data?.discountAutomaticAppCreate,userErrors:createData?.data?.discountAutomaticAppCreate?.userErrors||[]},timestamp:Date.now()})}).catch(()=>{});
-    // #endregion
     const createErrors = createData.data?.discountAutomaticAppCreate?.userErrors || [];
     if (createErrors.length > 0) {
         throw new Error(`Failed to create consolidated discount node: ${JSON.stringify(createErrors)}`);
@@ -406,7 +371,7 @@ async function upsertConsolidatedNode(
     }
     const numericId = createdGid.split("/").pop() || null;
     await updateShopConfigNodeId(shop, numericId);
-    const createMetafieldCheckRes = await admin.graphql(`
+    await admin.graphql(`
         #graphql
         query DiscountNodeMetafieldCheck($id: ID!, $namespace: String!, $key: String!) {
             node(id: $id) {
@@ -422,21 +387,11 @@ async function upsertConsolidatedNode(
     `, {
         variables: { id: createdGid, namespace: "bundle_app", key: "config" }
     });
-    const createMetafieldCheckData = await createMetafieldCheckRes.json();
-    // #region agent log
-    fetch('http://127.0.0.1:7665/ingest/10e41b89-e35d-4666-ad18-f1b09f5cc832',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'e4134a'},body:JSON.stringify({sessionId:'e4134a',runId:'post-fix',hypothesisId:'H9',location:'app/utils/settings.server.ts:upsertConsolidatedNode:createMetafieldCheck',message:'create metafield check',data:{shop,discountNodeId:createdGid,hasMetafield:Boolean(createMetafieldCheckData?.data?.node?.metafield),metafieldValueLength:createMetafieldCheckData?.data?.node?.metafield?.value?.length||0},timestamp:Date.now()})}).catch(()=>{});
-    // #endregion
-    // #region agent log
-    fetch('http://127.0.0.1:7665/ingest/10e41b89-e35d-4666-ad18-f1b09f5cc832',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'e4134a'},body:JSON.stringify({sessionId:'e4134a',runId:'pre-fix',hypothesisId:'H4',location:'app/utils/settings.server.ts:upsertConsolidatedNode:createSuccess',message:'created consolidated node',data:{shop,nodeId:numericId,payloadBytes,bundleCount:bundleConfigs.length},timestamp:Date.now()})}).catch(()=>{});
-    // #endregion
     await auditConsolidatedDiscountState(admin, shop);
     return { mode: "created", nodeId: numericId, payloadBytes };
 }
 
 export async function syncConsolidatedDiscountNode(shop: string, admin: any) {
-    // #region agent log
-    fetch('http://127.0.0.1:7665/ingest/10e41b89-e35d-4666-ad18-f1b09f5cc832',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'e4134a'},body:JSON.stringify({sessionId:'e4134a',runId:'pre-fix',hypothesisId:'H1',location:'app/utils/settings.server.ts:syncConsolidatedDiscountNode:entry',message:'sync start',data:{shop},timestamp:Date.now()})}).catch(()=>{});
-    // #endregion
     await registerBundleMetafieldDefinitions(admin);
     const functionId = await resolveFunctionId(admin);
     const activeBundles = await prisma.bundle.findMany({
@@ -444,9 +399,6 @@ export async function syncConsolidatedDiscountNode(shop: string, admin: any) {
         include: { items: true, tiers: true },
         orderBy: [{ priority: "desc" }, { updatedAt: "desc" }],
     });
-    // #region agent log
-    fetch('http://127.0.0.1:7665/ingest/10e41b89-e35d-4666-ad18-f1b09f5cc832',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'e4134a'},body:JSON.stringify({sessionId:'e4134a',runId:'pre-fix',hypothesisId:'H1',location:'app/utils/settings.server.ts:syncConsolidatedDiscountNode:activeBundles',message:'active bundles loaded',data:{shop,bundleCount:activeBundles.length,bundles:activeBundles.map((b:any)=>({id:b.id,type:b.type,discountType:b.discountType,discountValue:Number(b.discountValue||0),targetQuantity:b.targetQuantity,itemCount:b.items?.length||0,tierCount:b.tiers?.length||0}))},timestamp:Date.now()})}).catch(()=>{});
-    // #endregion
 
     if (activeBundles.length === 0) {
         const shopConfig = await ensureShopConfig(shop);
@@ -460,9 +412,6 @@ export async function syncConsolidatedDiscountNode(shop: string, admin: any) {
     const bundleConfigs = [];
     for (const bundle of activeBundles) {
         const resolvedItems = await resolveCollectionItems(bundle.items, admin);
-        // #region agent log
-        fetch('http://127.0.0.1:7665/ingest/10e41b89-e35d-4666-ad18-f1b09f5cc832',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'e4134a'},body:JSON.stringify({sessionId:'e4134a',runId:'pre-fix',hypothesisId:'H2',location:'app/utils/settings.server.ts:syncConsolidatedDiscountNode:resolvedItems',message:'bundle items resolved',data:{bundleId:bundle.id,bundleType:bundle.type,rawItemCount:bundle.items?.length||0,resolvedItemCount:resolvedItems.length,rawItems:(bundle.items||[]).slice(0,6).map((i:any)=>({productId:i.productId,collectionId:i.collectionId,requiredQuantity:i.requiredQuantity})),resolvedItems:(resolvedItems||[]).slice(0,6).map((i:any)=>({productId:i.productId,collectionId:i.collectionId,requiredQuantity:i.requiredQuantity}))},timestamp:Date.now()})}).catch(()=>{});
-        // #endregion
         const normalizedItems = resolvedItems.map(item => ({
             productId: item.productId,
             collectionId: item.collectionId,
@@ -510,9 +459,6 @@ export async function syncConsolidatedDiscountNode(shop: string, admin: any) {
             tiers: normalizedTiers,
         });
     }
-    // #region agent log
-    fetch('http://127.0.0.1:7665/ingest/10e41b89-e35d-4666-ad18-f1b09f5cc832',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'e4134a'},body:JSON.stringify({sessionId:'e4134a',runId:'pre-fix',hypothesisId:'H3',location:'app/utils/settings.server.ts:syncConsolidatedDiscountNode:bundleConfigs',message:'bundle configs prepared',data:{bundleCount:bundleConfigs.length,bundleConfigs:bundleConfigs.map((b:any)=>({id:b.id,type:b.type,discountType:b.discountType,discountValue:b.discountValue,targetQuantity:b.targetQuantity,itemCount:b.items?.length||0,tierCount:b.tiers?.length||0,firstItems:(b.items||[]).slice(0,4)}))},timestamp:Date.now()})}).catch(()=>{});
-    // #endregion
 
     const combinesWith = {
         orderDiscounts: activeBundles.some((b: any) => b.stacksWithOrderDiscounts),
